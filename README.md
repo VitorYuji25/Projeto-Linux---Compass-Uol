@@ -17,15 +17,15 @@ Primeiro Projeto de Linux - Compass Uol
     - SSH com a origem My IP;
     - HTTP com origem Anywhere;
 
-![image.png](attachment:70af66d8-d489-4266-9702-ed11609c3991:image.png)
+![Tags_EC2.png](Prints_Relatório/Tags_EC2.png)
 
-![image.png](attachment:0cb8fb42-b5a2-4e0e-8ab4-20a045960b1a:image.png)
+![Sec_Group_1.png](Prints_Relatório/Sec_Group_1.png)
 
-![image.png](attachment:d34f67f2-defc-4e0d-bcc0-26c20459e2cb:image.png)
+![Sec_Group_2.png](Prints_Relatório/Sec_Group_2.png)
 
-![image.png](attachment:2d26b69d-1e65-4454-aad6-4464accf5c50:image.png)
+![AMI.png](Prints_Relatório/AMI.png)
 
-![image.png](attachment:b1ee2e42-db07-4db8-bf1e-a6f82faf6a4d:image.png)
+![Instance_EC2.png](Prints_Relatório/Instance_EC2.png)
 
 - Alocação do IP elástico;
 
@@ -52,13 +52,13 @@ sudo systemctl status nginx
 
 Comando para passar a pasta do meu Ubuntu para a EC2:
 
-![image.png](attachment:55b6af68-987c-404c-afdc-dd8acfaeeaf8:image.png)
+![Mover_Webpgae.png](Prints_Relatório/Mover_Webpgae.png)
 
 - Colocando a pagina no root do nginx da EC2:
 
-![image.png](attachment:57051e99-83ad-4cf8-8da4-fa1dfcc70280:image.png)
+![Pag_nginx.png](Prints_Relatório/Pag_nginx.png)
 
-Link: http://3.147.31.252/pag_web/index.html
+Link: http://3.147.31.252/pag_web/index.html (IP elastico não mais associado)
 
 ## Script Bash de Monitoramento
 
@@ -210,14 +210,14 @@ done
 
 - Teste com site, localmente:
 
-![image.png](attachment:d8e1469c-eca7-4f11-932d-32ef19f7b6f8:image.png)
+![Test_Local_Telegram,_1.png](Prints_Relatório/Test_Local_Telegram,_1.png)
 
-![image.png](attachment:e98da8e8-d0ea-4dba-b497-27fd7578b9de:image.png)
+![Test_Local_Telegram,_2.png](Prints_Relatório/Test_Local_Telegram,_2.png)
 
 ### Teste com Site na EC2:
 
-![image.png](attachment:001a3ef7-e008-4f36-871a-4fc131ab47b4:image.png)
+![Teste_EC2_Monitor.png](Prints_Relatório/Teste_EC2_Monitor.png)
 
-![image.png](attachment:d6e8dc91-732e-41af-bb59-50a7987e3edb:image.png)
+![Test_EC2_Telegram.png](Prints_Relatório/Test_EC2_Telegram.png)
 
-![image.png](attachment:00203c19-a607-455b-8b7c-de9411dbb461:image.png)
+![Site_EC2.png](Prints_Relatório/Site_EC2.png)

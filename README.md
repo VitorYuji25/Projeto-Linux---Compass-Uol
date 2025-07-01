@@ -1,6 +1,24 @@
 # Projeto-Linux---Compass-Uol
 Primeiro Projeto de Linux - Compass Uol
 
+## 📑 Índice
+
+- [Alocação de Recursos](#alocação-de-recursos)
+  - [VPCs](#vpcs)
+  - [EC2](#ec2)
+  - [Criação do Bot (Telegram)](#criação-do-bot-escolha-bot-no-telegram)
+- [Conexão com a Instância EC2](#conexão-com-a-instancia-ec2)
+- [Instalação e Configuração do Nginx](#instalação-e-configuração-do-nginx)
+  - [Colocando a Página Web](#colocando-a-página-web)
+- [Script Bash de Monitoramento](#script-bash-de-monitoramento)
+- [Explicação do Código](#explicação-do-código)
+  - [Início do Monitoramento](#inicio-do-monitoramento)
+  - [Loop de Monitoramento](#loop-de-monitoramento)
+  - [Site fora do Ar](#site-fora-do-ar)
+  - [Site no Ar](#site-no-ar)
+- [Bot de Monitoramento (Telegram)](#bot-de-monitoramento-telegram)
+
+
 ## Alocação de Recursos
 
 ### VPCs

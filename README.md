@@ -28,8 +28,14 @@ Primeiro Projeto de Linux - Compass Uol
 ![Instance_EC2.png](Prints_Relatório/Instance_EC2.png)
 
 - Alocação do IP Dinâmica;
-    - A cada nova inicialização, um novo IP público é associado. 
+    - A cada nova inicialização, um novo IP público é associado.
 
+___
+
+### Criação do Bot (Escolha Bot no Telegram)
+- Criação do Bot pelo BotFather
+
+___
 ## Conexão com a Instancia EC2
 
 ```bash
@@ -198,6 +204,8 @@ STATUS=$(curl -s --max-time 10 -o /dev/null -w "%{http_code}" "$SITE")
 ```
 - Realiza a requisição HTTP para o site:
 
+- **curl**: ferramenta de linha de comando para transferências de dados com URLs. 
+
 - **-s** → modo silencioso.
 
 - **--max-time 10** → espera no máximo 10 segundos.
@@ -257,6 +265,7 @@ done
 ## Bot de Monitoramento (Telegram):
 
 - Teste com site, localmente:
+- **Obs:** Para testes foi utilizado um intervalo de 10-15 segundos.
 
 ![Test_Local_Telegram,_1.png](Prints_Relatório/Test_Local_Telegram,_1.png)
 

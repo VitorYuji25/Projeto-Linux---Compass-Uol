@@ -34,6 +34,19 @@ Primeiro Projeto de Linux - Compass Uol
 - Security Group
     - SSH com a origem My IP;
     - HTTP com origem Anywhere;
+#### 3 Tags
+- Chaves:
+    - Name
+    - CostCenter
+    - Project
+- Valor:
+    -  PB - JUN 2025
+    -  C092000024
+    -  PB - JUN 2025
+-  Tipos de Recursos:
+    - Instâncias e Volumes
+    - Instâncias e Volumes
+    - Instâncias e Volumes 
 
 
 ![Sec_Group_1.png](Prints_Relatório/Sec_Group_1.png)

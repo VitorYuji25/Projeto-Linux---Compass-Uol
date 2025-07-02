@@ -93,8 +93,6 @@ Comando para passar a pasta do meu Ubuntu para a EC2:
 
 - Colocando a pagina no root do nginx da EC2:
 
-![Pag_nginx.png](Prints_Relatório/Pag_nginx.png)
-
 ```
 sudo chown -R www-data:www-data /var/www/html/pag_web
 ```

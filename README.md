@@ -35,8 +35,6 @@ Primeiro Projeto de Linux - Compass Uol
     - SSH com a origem My IP;
     - HTTP com origem Anywhere;
 
-![Tags_EC2.png](Prints_Relatório/Tags_EC2.png)
-
 ![Sec_Group_1.png](Prints_Relatório/Sec_Group_1.png)
 
 ![Sec_Group_2.png](Prints_Relatório/Sec_Group_2.png)

@@ -1,0 +1,143 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Infraestrutura com EC2 + Nginx + Monitoramento via UserData
+
+Parameters:
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: Nome do par de chaves para acesso SSH
+
+Resources:
+
+  # --- VPC ---
+  MinhaVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: VPC-Monitoramento
+
+  # --- Subnet Pública ---
+  SubnetPublica:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MinhaVPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: !Select [0, !GetAZs '']
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: SubnetPublica
+
+  # --- Internet Gateway ---
+  IGW:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: IGW-Monitoramento
+
+  IGWAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref IGW
+      VpcId: !Ref MinhaVPC
+
+  # --- Route Table ---
+  TabelaRotas:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MinhaVPC
+      Tags:
+        - Key: Name
+          Value: RouteTablePublica
+
+  RotaInternet:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref TabelaRotas
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref IGW
+
+  AssociarRota:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref SubnetPublica
+      RouteTableId: !Ref TabelaRotas
+
+  # --- Security Group ---
+  SGWeb:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Acesso HTTP e SSH
+      VpcId: !Ref MinhaVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: SG-Web
+
+  # --- Instância EC2 ---
+  EC2Monitor:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      KeyName: !Ref KeyName
+      SubnetId: !Ref SubnetPublica
+      ImageId: ami-0fc5d935ebf8bc3bc # Ubuntu 22.04 LTS (Ohio)
+      SecurityGroupIds:
+        - !Ref SGWeb
+      Tags:
+        - Key: Name
+          Value: EC2-Monitoramento
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          apt update -y && apt upgrade -y
+          apt install nginx curl screen -y
+          mkdir -p /var/www/html/pag_web
+          echo "<html><body><h1>Página Web EC2</h1></body></html>" > /var/www/html/pag_web/index.html
+
+          cat <<EOF > /usr/local/bin/site_monitor.sh
+          #!/bin/bash
+          SITE="http://\$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)/pag_web/index.html"
+          INTERVALO=60
+          LOG="/tmp/monitor_site.log"
+          BOT_TOKEN="SEU_BOT_TOKEN"
+          CHAT_ID="SEU_CHAT_ID"
+
+          echo "Monitorando \$SITE..." | tee -a "\$LOG"
+          curl -s -X POST "https://api.telegram.org/bot\$BOT_TOKEN/sendMessage" -d chat_id="\$CHAT_ID" -d text="📡 Iniciando monitoramento do site: \$SITE"
+
+          while true; do
+            HORA=\$(date +"%H:%M:%S")
+            STATUS=\$(curl -s --max-time 10 -o /dev/null -w "%{http_code}" "\$SITE")
+            if [ -z "\$STATUS" ] || [ "\$STATUS" != "200" ]; then
+              echo "\$HORA - Site fora do ar! (Status: \${STATUS:-sem resposta})" | tee -a "\$LOG"
+              curl -s -X POST "https://api.telegram.org/bot\$BOT_TOKEN/sendMessage" -d chat_id="\$CHAT_ID" -d text="🚨 [\$HORA] O site \$SITE está FORA DO AR! (Status: \${STATUS:-sem resposta})"
+            else
+              echo "\$HORA - Site no ar (Status: \$STATUS)" | tee -a "\$LOG"
+              curl -s -X POST "https://api.telegram.org/bot\$BOT_TOKEN/sendMessage" -d chat_id="\$CHAT_ID" -d text="✅ [\$HORA] O site \$SITE está NO AR (Status: \$STATUS)"
+            fi
+            sleep \$INTERVALO
+          done
+          EOF
+
+          chmod +x /usr/local/bin/site_monitor.sh
+          screen -dmS monitor bash /usr/local/bin/site_monitor.sh
+          systemctl enable nginx
+          systemctl start nginx
+
+Outputs:
+  IPPublico:
+    Description: IP público da instância
+    Value: !GetAtt EC2Monitor.PublicIp

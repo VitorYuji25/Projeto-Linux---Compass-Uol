@@ -143,7 +143,7 @@ while true; do
   # Faz a requisição com timeout de 10s
   STATUS=$(curl -s --max-time 10 -o /dev/null -w "%{http_code}" "$SITE")
 
-  # Se não recebeu resposta, trata como fora do ar
+  # Se não recebeu resposta, trata como fora do ar ou erro
   if [ -z "$STATUS" ] || [ "$STATUS" != "200" ]; then
     echo "$HORA - Site fora do ar! (Status: ${STATUS:-sem resposta})" >> "$LOG" 2>&1
     curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
@@ -159,7 +159,6 @@ while true; do
   # Aguarda próximo ciclo
   sleep "$INTERVALO"
 done
-
 ```
 ## Explicação do Código:
 

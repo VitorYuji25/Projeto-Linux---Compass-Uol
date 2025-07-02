@@ -124,16 +124,17 @@ ___
 #!/bin/bash
 
 # === CONFIGURAÇÕES ===
-SITE="http://3.147.31.252/pag_web/index.html"   # Site a ser monitorado
-INTERVALO=60                                    # Intervalo entre verificações (segundos)
+SITE="http://localhost/"   # Site a ser monitorado
+# SITE="http://IP_INSTANCE/pag_web/index.html"
+INTERVALO=30                                    # Intervalo entre verificações (segundos)
 LOG="/var/log/website_monitor.log"              # Caminho do arquivo de log
-BOT_TOKEN="..."
-CHAT_ID="..."
+BOT_TOKEN="7760269204:AAEAljGaxEEly0apEmdzF6TxTqORq7qQ7_k"
+CHAT_ID="7943142177"
 
 # === MENSAGEM DE INÍCIO ===
 echo "Monitorando $SITE..." >> "$LOG" 2>&1
 curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
-  -d chat_id="$CHAT_ID" -d text="📡 Iniciando monitoramento do site: $SITE"
+  -d chat_id="$CHAT_ID" -d text="📡 Iniciando monitoramento do site: $SITE" > /dev/null 2>&1
 
 # === LOOP DE MONITORAMENTO ===
 while true; do
@@ -147,17 +148,18 @@ while true; do
     echo "$HORA - Site fora do ar! (Status: ${STATUS:-sem resposta})" >> "$LOG" 2>&1
     curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
       -d chat_id="$CHAT_ID" \
-      -d text="🚨 [$HORA] O site $SITE está FORA DO AR! (Status: ${STATUS:-sem resposta})"
+      -d text="🚨 [$HORA] O site $SITE está FORA DO AR! (Status: ${STATUS:-sem resposta})" > /dev/null 2>&1
   else
     echo "$HORA - Site no ar (Status: $STATUS)" >> "$LOG" 2>&1
     curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
       -d chat_id="$CHAT_ID" \
-      -d text="✅ [$HORA] O site $SITE está NO AR (Status: $STATUS)"
+      -d text="✅ [$HORA] O site $SITE está NO AR (Status: $STATUS)" > /dev/null 2>&1
   fi
 
   # Aguarda próximo ciclo
   sleep "$INTERVALO"
 done
+
 ```
 ## Explicação do Código:
 

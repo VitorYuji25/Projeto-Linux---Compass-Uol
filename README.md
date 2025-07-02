@@ -126,10 +126,10 @@ ___
 # === CONFIGURAÇÕES ===
 SITE="http://localhost/"   # Site a ser monitorado
 # SITE="http://IP_INSTANCE/pag_web/index.html"
-INTERVALO=30                                    # Intervalo entre verificações (segundos)
+INTERVALO=60                                    # Intervalo entre verificações (segundos)
 LOG="/var/log/website_monitor.log"              # Caminho do arquivo de log
-BOT_TOKEN="7760269204:AAEAljGaxEEly0apEmdzF6TxTqORq7qQ7_k"
-CHAT_ID="7943142177"
+BOT_TOKEN="..."
+CHAT_ID="..."
 
 # === MENSAGEM DE INÍCIO ===
 echo "Monitorando $SITE..." >> "$LOG" 2>&1
@@ -174,7 +174,7 @@ INTERVALO=60
 - Intervalo de tempo entre as verificações
 ___
 ```
-LOG="/tmp/monitor_site.log"
+LOG="/var/log/website_monitor.log"
 ```
 - Caminho onde o log sera salvo
 ___
@@ -186,13 +186,15 @@ CHAT_ID="..."    # ID do seu chat no Telegram
 ___
 ### Inicio do Monitoramento:
 ```
-echo "Monitorando $SITE..." | tee -a "$LOG"
+echo "Monitorando $SITE..." >> "$LOG" 2>&1
 ```
-- Exibe a mensagem no terminal e também grava no log.
+- Grava no log.
+- **>> &LOG**: Direciona a saída do comando echo para o final do arquivo log.
+- **2>&1**: Direciona qualquer erro do echo também para o arquivo log.
 
 ```
 curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
-  -d chat_id="$CHAT_ID" -d text="📡 Iniciando monitoramento do site: $SITE"
+  -d chat_id="$CHAT_ID" -d text="📡 Iniciando monitoramento do site: $SITE" > /dev/null 2>&1
 
 ```
 - Envia uma mensagem inicial via Telegram, avisando que o monitoramento começou.
@@ -222,7 +224,7 @@ STATUS=$(curl -s --max-time 10 -o /dev/null -w "%{http_code}" "$SITE")
 ```
 - Realiza a requisição HTTP para o site:
 
-- **curl**: ferramenta de linha de comando para transferências de dados com URLs. 
+- **curl**: comando para transferências de dados com URLs. 
 
 - **-s** → modo silencioso (Não mostra progresso e erros no terminal).
 
@@ -245,10 +247,10 @@ if [ -z "$STATUS" ] || [ "$STATUS" != "200" ]; then
     - Se qualquer uma for verdadeira, o site está fora do ar.
 ___
 ```
-echo "$HORA - Site fora do ar! (Status: ${STATUS:-sem resposta})" | tee -a "$LOG"
+echo "$HORA - Site fora do ar! (Status: ${STATUS:-sem resposta})" >> "$LOG" 2>&1
 ```
 - Caso o site esteja fora do ar:
-    - Imprime e grava no arquivo log uma mensagem com o horário e status retornado.
+    - Grava no arquivo log uma mensagem com o horário e status retornado.
 ___
 ```
 curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
@@ -260,13 +262,13 @@ ___
 ### Site no Ar
 ```
 else
-    echo "$HORA - Site no ar (Status: $STATUS)" | tee -a "$LOG"
+   echo "$HORA - Site no ar (Status: $STATUS)" >> "$LOG" 2>&1
 ```
-- Grava e exibe a mensagem de sucesso com o horário.
+- Grava e exibe a mensagem de sucesso com o horário no telegram.
 ```
     curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
       -d chat_id="$CHAT_ID" \
-      -d text="✅ [$HORA] O site $SITE está NO AR (Status: $STATUS)"
+      -d text="✅ [$HORA] O site $SITE está NO AR (Status: $STATUS)" > /dev/null 2>&1
 ```
 - Envia uma mensagem positiva para o Telegram, confirmando que o site está acessível.
 ___

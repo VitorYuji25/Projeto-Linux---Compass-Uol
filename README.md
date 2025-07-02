@@ -124,8 +124,8 @@ ___
 #!/bin/bash
 
 # === CONFIGURAÇÕES ===
-SITE="http://localhost/"   # Site a ser monitorado
-# SITE="http://IP_INSTANCE/pag_web/index.html"
+#SITE="http://localhost/"   # Site a ser monitorado
+SITE="http://IP_INSTANCE/pag_web/index.html"
 INTERVALO=60                                    # Intervalo entre verificações (segundos)
 LOG="/var/log/website_monitor.log"              # Caminho do arquivo de log
 BOT_TOKEN="..."

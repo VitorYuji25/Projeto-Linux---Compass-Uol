@@ -23,7 +23,7 @@ Primeiro Projeto de Linux - Compass Uol
 
 ### VPCs
 
-- Foram criados 1 VPC com 2 Subnets Publicas, alocadas em 2 *Avaliable Zonas* diferentes de Ohio, para casos de problemas infra estruturais
+- Foram criados 1 VPC com 2 Subnets Publicas, alocadas em 2 *Avaliable Zonas* diferentes de Ohio, para casos de problemas infraestruturais
 - 2 Subnets Privadas alocadas em duas *Avaliable Zonas* diferentes de Ohio
 
 ### EC2
@@ -197,13 +197,13 @@ curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
 ```
 - Envia uma mensagem inicial via Telegram, avisando que o monitoramento começou.
 
-- **curl -s** → modo silencioso (não exibe progresso).
+- **curl -s** → modo silencioso (Não mostra progresso e erros no terminal).
 
 - **X POST** → método HTTP POST.
 
-- **d** → dados enviados no corpo da requisição.
+- **d** → dados do corpo da requisição.
 
-- **"${BOT_TOKEN}"** é inserido dinamicamente na URL.
+- **"${BOT_TOKEN}"** token do bot é inserido na URL.
 ___
 ### Loop de Monitoramento
 ```
@@ -215,7 +215,7 @@ ___
 ```
 HORA=$(date +"%H:%M:%S")
 ```
-- Salva a hora atual no formato: Horas, Minutis, Segundos.
+- Salva a hora atual no formato: Horas, Minutos, Segundos.
 ___
 ```
 STATUS=$(curl -s --max-time 10 -o /dev/null -w "%{http_code}" "$SITE")
@@ -224,7 +224,7 @@ STATUS=$(curl -s --max-time 10 -o /dev/null -w "%{http_code}" "$SITE")
 
 - **curl**: ferramenta de linha de comando para transferências de dados com URLs. 
 
-- **-s** → modo silencioso.
+- **-s** → modo silencioso (Não mostra progresso e erros no terminal).
 
 - **--max-time 10** → espera no máximo 10 segundos.
 
@@ -241,14 +241,14 @@ if [ -z "$STATUS" ] || [ "$STATUS" != "200" ]; then
 ```
 - Condição do Site Fora do Ar:
     - STATUS está vazio (-z) → ou seja, nenhuma resposta.
-    - OU o status não é 200 (OK).
+    - Ou o status não é 200 (OK).
     - Se qualquer uma for verdadeira, o site está fora do ar.
 ___
 ```
 echo "$HORA - Site fora do ar! (Status: ${STATUS:-sem resposta})" | tee -a "$LOG"
 ```
 - Caso o site esteja fora do ar:
-    - Imprime e grava no log uma mensagem com o horário e status retornado.
+    - Imprime e grava no arquivo log uma mensagem com o horário e status retornado.
 ___
 ```
 curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \

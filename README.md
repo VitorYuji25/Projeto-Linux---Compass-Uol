@@ -35,16 +35,6 @@ Primeiro Projeto de Linux - Compass Uol
     - SSH com a origem My IP;
     - HTTP com origem Anywhere;
 
-
-
-![Sec_Group_1.png](Prints_Relatório/Sec_Group_1.png)
-
-![Sec_Group_2.png](Prints_Relatório/Sec_Group_2.png)
-
-![AMI.png](Prints_Relatório/AMI.png)
-
-![Instance_EC2.png](Prints_Relatório/Instance_EC2.png)
-
 - Alocação do IP Dinâmica;
     - A cada nova inicialização, um novo IP público é associado.
 

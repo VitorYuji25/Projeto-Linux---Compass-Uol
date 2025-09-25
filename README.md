@@ -34,19 +34,7 @@ Primeiro Projeto de Linux - Compass Uol
 - Security Group
     - SSH com a origem My IP;
     - HTTP com origem Anywhere;
-#### 3 Tags
-- Chaves:
-    - Name
-    - CostCenter
-    - Project
-- Valor:
-    -  PB - JUN 2025
-    -  C092000024
-    -  PB - JUN 2025
--  Tipos de Recursos:
-    - Instâncias e Volumes
-    - Instâncias e Volumes
-    - Instâncias e Volumes 
+
 
 
 ![Sec_Group_1.png](Prints_Relatório/Sec_Group_1.png)
@@ -124,7 +112,7 @@ sudo chmod -R 755 /var/www/html/pag_web
 
 - /var/www/html/pag_web: pasta que receberá essas permissões.
 
-Link: http://3.147.31.252/pag_web/index.html (IP elastico não mais associado)
+Link: http://<ip_elastico>/pag_web/index.html (IP elastico não mais associado)
 ___
 ## Script Bash de Monitoramento
 
@@ -173,7 +161,7 @@ done
 ## Explicação do Código:
 
 ```
-SITE="http://3.147.31.252/pag_web/index.html"
+SITE="http://<ip_elastico>/pag_web/index.html"
 ```
 - Definição do URL do site a ser monitorado
 ___
